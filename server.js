@@ -15,7 +15,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 4000;
 const JWT_SECRET = process.env.JWT_SECRET;
 
 
@@ -37,8 +37,6 @@ app.post('/login', async (req, res) => {
         return res.status(401).json({ auth: false, message: error.message });
     }
 
-    
-    console.log(data)
     res.json({ auth: true, token: data.session.access_token });
 });
 
@@ -53,6 +51,11 @@ app.get('/protected', (req, res) => {
     }
 
     const token = authHeader.split(' ')[1];
+    
+    if (!token) {
+        const token = localStorage.get('token')
+    }
+
 
     jwt.verify(token, JWT_SECRET, (err, decoded) => {
         if (err) {
@@ -62,8 +65,26 @@ app.get('/protected', (req, res) => {
         // Token é válido, prossiga com a lógica
         res.status(200).json({ auth: true, token: token });
 
-    });
+    });    
+});
 
+app.post('/login/google', async (req, res) => {
+    try {
+        const { data, error } = await supabase.auth.signInWithOAuth({
+            provider: 'google',
+        });
+
+        if (error) {
+            return res.status(400).json({ auth: false, message: error.message });
+        }
+
+        res.json({ auth: true, redirectUrl: data.url });
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao autenticar com o Google', error });
+    }
+});
+
+app.get('/auth/callback', async (req, res) => {
     
 });
 

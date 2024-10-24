@@ -1,3 +1,5 @@
+auth_google.html
+not_auth.html
 protected.html
 index.html
 .env
