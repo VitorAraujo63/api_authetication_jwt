@@ -1,6 +1,8 @@
 auth_google.html
 not_auth.html
 protected.html
+protected2.html
 index.html
 .env
 /node_modules
+/backup

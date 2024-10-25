@@ -84,8 +84,15 @@ app.post('/login/google', async (req, res) => {
     }
 });
 
-app.get('/auth/callback', async (req, res) => {
-    
+app.post('/signout', async (req, res) => {
+    try {
+        const { error } = await supabase.auth.signOut();
+        if (error) throw error;
+
+        res.status(200).json({ sucess: true, message: 'Logout realizado com sucesso' });
+    } catch (error) {
+        res.status(500).json({ sucess: false, message: 'Erro ao fazer logout', error: error.message });
+    }
 });
 
 // Iniciando o servidor
