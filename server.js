@@ -33,6 +33,7 @@ app.post('/login', async (req, res) => {
         password,
     });
 
+
     if (error) {
         return res.status(401).json({ auth: false, message: error.message });
     }
@@ -62,12 +63,13 @@ app.get('/protected', (req, res) => {
             return res.status(500).json({ auth: false, message: 'Falha na autenticação do token.' });
         }
 
-        // Token é válido, prossiga com a lógica
         res.status(200).json({ auth: true, token: token });
 
     });    
 });
 
+
+// Rota para login com o google
 app.post('/login/google', async (req, res) => {
     try {
         const { data, error } = await supabase.auth.signInWithOAuth({
@@ -84,6 +86,8 @@ app.post('/login/google', async (req, res) => {
     }
 });
 
+
+// Rota para signout
 app.post('/signout', async (req, res) => {
     try {
         const { error } = await supabase.auth.signOut();
@@ -94,6 +98,38 @@ app.post('/signout', async (req, res) => {
         res.status(500).json({ sucess: false, message: 'Erro ao fazer logout', error: error.message });
     }
 });
+
+// Rota informações do usuario
+app.get('/user_profile', async (req, res) => {
+    try {
+        const token = req.headers.authorization?.split(' ')[1];
+        console.log('Token recebido:', token);
+
+        if (!token) {
+            return res.status(401).json({ message: 'Token de autenticação não fornecido' });
+        }
+
+        const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+        if (authError) throw authError;
+        console.log('Usuário autenticado:', user);
+
+        if (!user) return res.status(401).json({ message: 'Usuário não encontrado' });
+
+        const { data: userData, error: userDataError } = await supabase
+            .from('users')
+            .select('*')
+            .eq('id', user.id);
+
+        if (userDataError) throw userDataError;
+        console.log('Dados do usuário:', userData);
+
+        res.status(200).json(userData);
+    } catch (err) {
+        console.error('Erro ao buscar dados do usuário:', err);
+        res.status(500).json({ message: 'Erro ao buscar dados do usuário', error: err.message });
+    }
+});
+
 
 // Iniciando o servidor
 app.listen(PORT, () => {
