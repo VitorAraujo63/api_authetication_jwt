@@ -103,7 +103,6 @@ app.post('/signout', async (req, res) => {
 app.get('/user_profile', async (req, res) => {
     try {
         const token = req.headers.authorization?.split(' ')[1];
-        console.log('Token recebido:', token);
 
         if (!token) {
             return res.status(401).json({ message: 'Token de autenticação não fornecido' });
@@ -121,9 +120,20 @@ app.get('/user_profile', async (req, res) => {
             .eq('id', user.id);
 
         if (userDataError) throw userDataError;
-        console.log('Dados do usuário:', userData);
 
+        // Solução para pegar dados de usuarios com provider unico do google
+        if (!userData.length) {
+            const fallbackData = {
+                id: user.id,
+                email: user.email,
+                name: user.user_metadata.full_name || user.user_metadata.name,
+                avatar_url: user.user_metadata.avatar_url,
+                created_at: user.created_at,
+            };
+            return res.status(200).json([fallbackData]);
+        }
         res.status(200).json(userData);
+        
     } catch (err) {
         console.error('Erro ao buscar dados do usuário:', err);
         res.status(500).json({ message: 'Erro ao buscar dados do usuário', error: err.message });
