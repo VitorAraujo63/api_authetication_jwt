@@ -110,7 +110,6 @@ app.get('/user_profile', async (req, res) => {
 
         const { data: { user }, error: authError } = await supabase.auth.getUser(token);
         if (authError) throw authError;
-        console.log('Usuário autenticado:', user);
 
         if (!user) return res.status(401).json({ message: 'Usuário não encontrado' });
 
