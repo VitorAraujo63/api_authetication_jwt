@@ -7,6 +7,7 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
+const multer = require('multer');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const { createClient } = require('@supabase/supabase-js'); // Importando o cliente Supabase
@@ -14,6 +15,7 @@ const { createClient } = require('@supabase/supabase-js'); // Importando o clien
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.json());
 
 const PORT = process.env.PORT || 4000;
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -128,6 +130,7 @@ app.get('/user_profile', async (req, res) => {
                 name: user.user_metadata.full_name || user.user_metadata.name,
                 avatar_url: user.user_metadata.avatar_url,
                 created_at: user.created_at,
+                phone: user.phone,
             };
             return res.status(200).json([fallbackData]);
         }
@@ -138,6 +141,107 @@ app.get('/user_profile', async (req, res) => {
         res.status(500).json({ message: 'Erro ao buscar dados do usuário', error: err.message });
     }
 });
+
+app.put('/edit_profile', async (req, res) => {
+    const token = req.headers.authorization?.split(' ')[1];
+
+    try {
+        const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+        if (authError) return res.status(401).json({ message: 'Erro de autenticação' });
+
+        if (!user) return res.status(401).json({ message: 'Usuário não encontrado' });
+
+        const { name, phone, institution } = req.body;
+
+        const { data: userData, error: userDataError } = await supabase
+            .from('users')
+            .select('*')
+            .eq('id', user.id)
+
+        if (userDataError) return res.status(500).json({ message: 'Erro ao buscar usuário' });
+
+        if (!userData.length) {
+            const fallbackData = {
+                id: user.id,
+                email: user.email,
+                name: user.user_metadata.full_name || user.user_metadata.name,
+                avatar_url: user.user_metadata.avatar_url,
+                created_at: user.created_at,
+                phone: user.phone,
+                
+            };
+            return res.status(200).json(fallbackData); 
+        }
+
+        const { error } = await supabase
+            .from('users')
+            .update({ name: name, phone: phone, institution: institution })
+            .eq('id', userData[0].id);
+
+        if (error) return res.status(500).json({ message: 'Erro ao atualizar usuário' });
+
+        res.status(200).json({ message: 'Perfil atualizado com sucesso' });
+    } catch (error) {
+        console.error('Erro na requisição:', error);
+        res.status(500).json({ message: 'Erro no servidor' });
+    }
+});
+
+const upload = multer({ storage: multer.memoryStorage() });
+
+app.post('/change_photo', upload.single('photo'), async (req, res) => {
+    try {
+        const { file } = req;
+        const token = req.headers.authorization?.split(' ')[1]; // Obtenha o token de autenticação do cabeçalho
+
+        if (!file) {
+            return res.status(400).json({ error: 'Nenhum arquivo enviado' });
+        }
+
+        const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+        if (authError || !user) {
+            return res.status(401).json({ message: 'Erro de autenticação ou usuário não encontrado' });
+        }
+
+        const filePath = `avatars/${user.id}/${file.originalname}`;
+
+        const { error: uploadError } = await supabase.storage
+            .from('avatars')
+            .upload(filePath, file.buffer, {
+                cacheControl: '3600',
+                upsert: true,
+                contentType: file.mimetype,
+            });
+
+        if (uploadError) {
+            throw uploadError;
+        }
+
+        const { data: publicUrlData, error: urlError } = supabase.storage
+            .from('avatars')
+            .getPublicUrl(filePath);
+
+        if (urlError || !publicUrlData) {
+            throw new Error('Erro ao obter URL pública');
+        }
+
+        const publicUrl = publicUrlData.publicUrl;
+
+        const { error: updateError } = await supabase
+            .from('users')
+            .update({ avatar_url: publicUrl })
+            .eq('id', user.id);
+
+        if (updateError) {
+            throw updateError;
+        }
+
+        res.status(200).json({ message: 'Foto enviada com sucesso', url: publicUrl });
+        } catch (error) {
+            console.error('Erro ao enviar foto:', error);
+            res.status(500).json({ error: 'Falha ao enviar a foto' });
+        }
+    });
 
 
 // Iniciando o servidor
