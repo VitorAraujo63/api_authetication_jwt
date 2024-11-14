@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    dawdadawdadadawd
+    <script>
+        window.onload = function() {
+            const hash = window.location.hash;
+            const urlParams = new URLSearchParams(hash.substring(1));
+            const token = urlParams.get('access_token');
+            
+            if (token) {
+                
+                localStorage.setItem('token', token);
+                alert('Login com Google bem-sucedido! Token armazenado.');
+                
+                
+                window.location.href = 'protected.html';
+
+                console.log(token)
+            } else {
+                console.log("Erro!")
+            }
+        }
+    </script>
+</body>
+</html>

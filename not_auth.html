@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acesso negado</title>
+    <style>
+        /* Reset de estilos */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #353535;
+            color: #fff;
+        }
+
+        /* Container da mensagem de erro */
+        .container {
+            text-align: center;
+            background-color: #252525;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+        }
+
+        /* Título */
+        h1 {
+            font-size: 28px;
+            color: #ff4f4f;
+            margin-bottom: 15px;
+        }
+
+        /* Mensagem de erro */
+        p {
+            font-size: 18px;
+            margin: 15px 0;
+        }
+
+        /* Botão de Login */
+        .login-btn {
+            text-decoration: none;
+            color: #fff;
+            background-color: #34C759;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+
+        .login-btn:hover {
+            background-color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Acesso Negado</h1>
+        <p>O seu acesso foi negado. Tente novamente!</p>
+        <a href="index.html" class="login-btn">Login</a>
+    </div>
+</body>
+</html>

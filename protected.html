@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - TalkLog</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Reset de estilos */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Estilo do cabeçalho */
+        header {
+            background-color: #252525;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        nav {
+        background-color: #333;
+        padding: 10px;
+        }
+
+        /* Definindo a navbar como flexível */
+        nav ul {
+            display: flex;
+            align-items: center;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Itens à esquerda */
+        nav ul li:not(:last-child) {
+            margin-right: 20px;
+        }
+
+        /* Link de estilo nos itens */
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Itens principais à esquerda e botão à direita */
+        nav ul li:last-child {
+            margin-left: auto; /* Empurra o botão logout para a direita */
+        }
+
+        /* Estilo do botão logout */
+        #signout {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+        }
+
+        /* Hero section */
+        .hero {
+            background-color: #353535;
+            color: #fff;
+            padding: 100px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+
+        .hero a {
+            padding: 15px 30px;
+            background-color: #34C759;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            border-radius: 5px;
+        }
+
+        .hero a:hover {
+            background-color: #28a745;
+        }
+
+        /* Seções de conteúdo */
+        .content-section {
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .content-section h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .content-section p {
+            font-size: 18px;
+            max-width: 800px;
+            margin: 0 auto 30px auto;
+        }
+
+        .content-section a {
+            color: #34C759;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        /* Estilo do botão de login com Google */
+        .google-login-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+            color: #333;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+
+        .google-login-btn img {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+
+        .google-login-btn:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #252525;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Cabeçalho com navegação -->
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">Sobre</a></li>
+                <li><a href="#services">Serviços</a></li>
+                <li><a href="#contact">Contato</a></li>
+                <li><a href="profile.html">Perfil</a></li> <!-- Link para a página de perfil -->
+                <li><button id="signout">Logout</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Seção Hero -->
+    <section class="hero">
+        <h1>Bem-vindo ao TalkLog</h1>
+        <p>Simplificando a comunicação em tempo real para você.</p>
+        <a href="#services">Conheça nossos serviços</a>
+    </section>
+
+    <!-- Seção de Conteúdo 1 -->
+    <section id="about" class="content-section">
+        <h2>Sobre Nós</h2>
+        <p>O TalkLog é uma plataforma inovadora que facilita a troca de informações de maneira rápida e segura, conectando pessoas e ideias em todo o mundo. Nosso objetivo é melhorar a comunicação e colaboração para todos os nossos usuários.</p>
+        <a href="#contact">Saiba Mais</a>
+    </section>
+
+    <!-- Seção de Conteúdo 2 -->
+    <section id="services" class="content-section" style="background-color: #f4f4f4;">
+        <h2>Nossos Serviços</h2>
+        <p>Oferecemos uma variedade de ferramentas para facilitar a comunicação, desde chats ao vivo, videoconferências, até integração com outras plataformas empresariais. Nosso compromisso é fornecer soluções de comunicação eficientes e acessíveis para todos os tipos de negócios.</p>
+        <a href="#contact">Entre em Contato</a>
+    </section>
+
+    <!-- Seção de Contato -->
+    <section id="contact" class="content-section">
+        <h2>Contato</h2>
+        <p>Entre em contato conosco para saber mais sobre como podemos ajudar sua empresa a melhorar a comunicação.</p>
+        <a href="mailto:contato@talklog.com">Enviar E-mail</a>
+    </section>
+
+    <!-- Rodapé -->
+    <footer>
+        <p>© 2024 TalkLog. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        const token = localStorage.getItem('token');
+        const date2 = localStorage.getItem('data');
+
+        console.log(date2)
+
+        if (!token || token === null) {
+            window.location.href = 'not_auth.html'; // Redireciona se não houver token
+        } else {
+            fetch('http://localhost:4000/protected', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}` // Usa o token no formato correto
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Você não está autorizado a acessar esta página.');
+                } else {
+                    console.log(response.status, 'Logado')
+                }
+                return response.json();
+            });
+        }
+
+        document.getElementById('signout').addEventListener('click', async () => {
+        const response = await fetch('http://localhost:4000/signout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const data = await response.json();
+        if (data.sucess) {
+            localStorage.removeItem('token');
+            window.location.href = 'index.html';
+        } else {
+            console.error(data.message);
+        }
+    })
+    </script>
+
+</body>
+</html>

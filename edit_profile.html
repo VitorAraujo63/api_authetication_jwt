@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil do Usuário</title>
+    <style>
+        /* Reset e estilo base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: #252525;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #333;
+            padding: 10px;
+        }
+
+        nav ul {
+            display: flex;
+            align-items: center;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li:not(:last-child) {
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        nav ul li:last-child {
+            margin-left: auto;
+        }
+
+        #signout {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+        }
+
+        .profile-section {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .profile-section img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 3px solid #34C759;
+            margin-bottom: 20px;
+        }
+
+        .profile-section h2,
+        .profile-section p {
+            color: #333;
+        }
+
+        .profile-section label {
+            display: block;
+            margin: 10px 0 5px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            text-align: left;
+        }
+
+        .profile-section input {
+            width: 100%;
+            padding: 12px;
+            margin: 5px 0 15px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .profile-section input:focus {
+            border-color: #34C759;
+        }
+
+        .profile-section input[disabled] {
+            background-color: #f3f3f3;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        .profile-section button {
+            width: 48%;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #34C759;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: 5px 1%;
+        }
+
+        .profile-section button#cancel {
+            background-color: #e74c3c;
+        }
+
+        .profile-section button:hover {
+            background-color: #2ca748;
+        }
+
+        .profile-section button#cancel:hover {
+            background-color: #c0392b;
+        }
+
+        .profile-section p {
+            color: #333;
+            margin-top: 20px;
+        }
+
+
+        #save {
+            background-color: #34C759;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 20px;
+        }
+
+        #save:hover {
+            background-color: #28a745;
+        }
+
+        #save:active {
+            transform: scale(0.95);
+        }
+
+        #cancel {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 20px;
+            margin-right: 10px;
+        }
+
+        #cancel:hover {
+            background-color: #d32f2f;
+        }
+
+        #cancel:active {
+            transform: scale(0.95);
+        }
+
+        #email {
+            background-color: #33333325;
+        }
+
+        #institution {
+            background-color: #33333325;
+        }
+
+        #change_photo {
+            background-color: #34C759;
+            border: none;
+            padding: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+        }
+
+        #change_photo img {
+            width: 50px;
+            height: 50px;
+            margin-top: 20px;
+        }
+
+        #change_photo:hover {
+            background-color: #28a745;
+        }
+
+        #change_photo:active {
+            transform: scale(0.95);
+        }
+
+
+
+        footer {
+            background-color: #252525;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="protected.html">Início</a></li>
+            <li><button id="signout">Logout</button></li>
+        </ul>
+    </nav>
+
+    <section class="profile-section">
+            <img src="" alt="Avatar" id="avatar">
+            <input type="file" name="change_avatar" id="change_avatar">
+
+            <label for="name">Nome</label>
+            <input id="name" placeholder="Username" required>
+
+            <label for="institution">Instituição</label>
+            <input id="institution" placeholder="Institution" disabled=''>
+
+            <label for="email">Email</label>
+            <input id="email" placeholder="Email" disabled=''>
+
+            <label for="phone">Telefone</label>
+            <input type="tel" id="phone" placeholder="Phone" required>
+
+            <button id="save" onClick="uploadProfilePhoto()">Salvar</button>
+            <button id="cancel">Cancelar</button>
+    </section>
+
+    <footer>
+        <p>© 2024 TalkLog. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        const token = localStorage.getItem('token');
+
+        if (!token || token === null) {
+            window.location.href = 'not_auth.html'; // Redireciona se não houver token
+        } else {
+            fetch('https://api-authetication-jwt.onrender.com/protected', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}` // Usa o token no formato correto
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Você não está autorizado a acessar esta página.');
+                } else {
+                    console.log(response.status, 'Logado')
+                }
+                return response.json();
+            });
+        }
+
+        async function fetchUserData() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('http://localhost:4000/user_profile', {
+                    method: 'GET',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error('Erro ao buscar dados do usuário:', errorData.message);
+                    return;
+                }
+
+                const [userData] = await response.json();
+                
+                document.getElementById('avatar').src = userData.avatar_url;
+                document.getElementById('name').value = userData.name;
+                document.getElementById('institution').value = userData.institution;
+                document.getElementById('email').value = userData.email;
+                document.getElementById('phone').value = userData.phone;
+
+            } catch (error) {
+                console.error('Erro na requisição:', error.message);
+            }
+        }
+
+        fetchUserData();
+
+        async function uploadProfilePhoto() {
+            const fileInput = document.getElementById('change_avatar');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                alert('Por favor escolha uma foto');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('photo', file);
+
+            try {
+                const response = await fetch('http://localhost:4000/change_photo', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: formData,
+                });
+
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    console.log('Photo uploaded successfully:', data.url);
+                } else {
+                    console.error('Upload error:', data.error);
+                }
+
+            } catch (error) {
+                console.error('An error occurred:', error);
+            }
+        }
+
+        document.getElementById('save').addEventListener('click', async () => {
+            const token = localStorage.getItem('token');
+            const name = document.getElementById('name').value; 
+            const phone = document.getElementById('phone').value;
+            const institution = document.getElementById('institution').value;
+
+            try {    
+                const response = await fetch('http://localhost:4000/edit_profile', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({ name, phone, institution }), 
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    console.log("Perfil atualizado com sucesso:", data);
+                    window.location.href = 'profile.html';
+                } else {
+                    console.error("Erro ao atualizar perfil:", data.message);
+                    alert(data.message);
+                }
+            } catch (error) {
+                console.error('Erro na requisição:', error);
+            }
+        });
+        
+        document.getElementById('cancel').addEventListener('click', function () {
+            window.location.href = 'profile.html';
+        });
+
+        document.getElementById('signout').addEventListener('click', async () => {
+        const response = await fetch('https://api-authetication-jwt.onrender.com/signout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const data = await response.json();
+        if (data.sucess) {
+            localStorage.removeItem('token');
+            window.location.href = 'index.html';
+        } else {
+            console.error(data.message);
+        }
+    })
+    </script>
+
+</body>
+</html>
